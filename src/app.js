@@ -22,7 +22,7 @@ import reportRoutes from './routes/reportRoutes.js';
 
 const app = express();
 
-// Set security HTTP headers
+
 app.use(helmet());
 
 // Enable CORS
