@@ -85,9 +85,9 @@ const app = express();
 // }));
 
 
-// Enable CORS
-app.use(cors());
-app.options('*', cors());
+// // Enable CORS
+// app.use(cors());
+// app.options('*', cors());
 // Parse JSON request body
 app.use(express.json());
 
