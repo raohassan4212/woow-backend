@@ -93,10 +93,43 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const adminRegister = async (req, res) => {
+  try {
+    const response = await authService.adminRegister(req.body);
+    return res.status(201).json(response);
+  } catch (error) {
+    return res.status(400).json(
+      {
+        code: 400,
+        success: false,
+        message: error.message,
+        data: null
+      }
+    );
+  }
+};
+
+const adminLogin = async (req, res) => {
+  try {
+    const response = await authService.adminLogin(req.body);
+    return res.status(201).json(response);
+  } catch (error) {
+    return res.status(400).json(
+      {
+        code: 400,
+        success: false,
+        message: error.message,
+        data: null
+      }
+    );
+  }
+};
 
 export const authController = {
     register,
     login,
     forgotPassword,
-    resetPassword
+    resetPassword,
+    adminRegister,
+    adminLogin
   }

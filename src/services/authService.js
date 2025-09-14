@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import createError from 'http-errors';
+import Admin from '../models/admin.model.js';
 import db from '../models/index.js';
 import { hashPassword, comparePassword } from '../utils/hash.js';
 import { generateToken } from '../utils/jwt.js';
@@ -62,9 +63,84 @@ export async function resetPassword({ email, token, newPassword }) {
     return true;
 }
 
+const adminRegister = async ({ first_name, last_name, email, password, role = 'admin' }) => {
+    // Check if admin with this email already exists
+    const existing = await Admin.findOne({ where: { email } });
+    if (existing) throw createError(409, 'Admin email already registered');
+    
+    // Hash the password
+    const passwordHash = await hashPassword(password);
+    
+    // Create the admin
+    const admin = await Admin.create({ 
+        first_name, 
+        last_name, 
+        email, 
+        password: passwordHash, 
+        role,
+        active: 1
+    });
+    
+    // Generate JWT token
+    const token = generateToken({ 
+        sub: admin.id, 
+        email: admin.email, 
+        role: admin.role,
+        type: 'admin'
+    }, '24h');
+    
+    return { 
+        code: 200,
+        success: true,
+        message: 'Admin registered successfully',
+        data: { 
+            id: admin.id, 
+            first_name: admin.first_name, 
+            last_name: admin.last_name,
+            email: admin.email, 
+            role: admin.role 
+        }, 
+        token 
+    };
+}
+
+const adminLogin = async ({ email, password }) => {
+    // Find admin by email
+    const admin = await Admin.findOne({ where: { email, active: 1 } });
+    if (!admin) throw createError(401, 'Invalid credentials');
+    
+    // Compare password
+    const match = await comparePassword(password, admin.password);
+    if (!match) throw createError(401, 'Invalid credentials');
+    
+    // Generate JWT token
+    const token = generateToken({ 
+        sub: admin.id, 
+        email: admin.email, 
+        role: admin.role,
+        type: 'admin'
+    }, '24h');
+    
+    return { 
+        code: 200,
+        success: true,
+        message: 'Admin logged in successfully',
+        data: { 
+            id: admin.id, 
+            first_name: admin.first_name, 
+            last_name: admin.last_name,
+            email: admin.email, 
+            role: admin.role 
+        }, 
+        token 
+    };
+}
+
 export const authService = {
     register,
     login,
     createPasswordResetToken,
-    resetPassword
-    }
+    resetPassword,
+    adminRegister,
+    adminLogin
+}
