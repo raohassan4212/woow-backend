@@ -23,16 +23,19 @@ import reportRoutes from './routes/reportRoutes.js';
 const app = express();
 
 
-// Allow only your frontend domain
-app.use(cors({
+// CORS configuration
+const corsOptions = {
   origin: "https://woowsocial.com",   // 👈 restrict to your frontend
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true
-}));
+};
 
-// Handle preflight requests
-app.options("*", cors());
+// Apply CORS to all requests
+app.use(cors(corsOptions));
+
+// Handle preflight requests with the same configuration
+app.options("*", cors(corsOptions));
 
 
 app.use(helmet());
