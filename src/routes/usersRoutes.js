@@ -1,9 +1,13 @@
 import express from 'express';
-const router = express.Router();
 import {usersController} from '../controllers/usersController.js';
+import auth from '../middlewares/auth.js';
 
-// Users routes
-router.get('/users', usersController.getUsers);
-router.get('/user-details', usersController.getUserDetails);
+const router = express.Router();
+
+// Only admin can access the users list
+router.get('/users', auth(['admin']), usersController.getUsers);
+
+// Both admin and user can access their own details
+router.get('/user-details', auth(['admin', 'user']), usersController.getUserDetails);
 
 export default router;
