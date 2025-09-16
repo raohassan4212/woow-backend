@@ -86,7 +86,7 @@ export async function getReports(options = {}) {
             success: true,
             message: 'Get Reports Successfully',
             data: {
-                reports: data,
+                data: data,
                 pagination: {
                     currentPage: pageNum,
                     totalPages,
@@ -159,7 +159,7 @@ export async function getReportReasons(options = {}) {
             success: true,
             message: 'Get Report Reasons Successfully',
             data: {
-                reasons: data,
+                data: data,
                 pagination: {
                     currentPage: pageNum,
                     totalPages,

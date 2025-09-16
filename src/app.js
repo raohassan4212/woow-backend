@@ -19,6 +19,7 @@ import analyticsRoutes from './routes/analyticsRoutes.js';
 import appSliderRoutes from './routes/appSliderRoutes.js';
 import hashtagRoutes from './routes/hashtagRoutes.js';
 import reportRoutes from './routes/reportRoutes.js';
+import giftRoutes from './routes/giftRoutes.js';
 
 const app = express();
 
@@ -120,6 +121,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/app-slider', appSliderRoutes);
 app.use('/api/hashtag', hashtagRoutes);
 app.use('/api/report', reportRoutes);
+app.use('/api/gift', giftRoutes);
 
 // Send 404 for any unknown API request
 app.use((req, res, next) => {
