@@ -23,6 +23,7 @@ import giftRoutes from './routes/giftRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
 import coinRoutes from './routes/coinRoutes.js';
 import topicRoutes from './routes/topicRoutes.js';
+import withdrawRoutes from './routes/withdrawRoutes.js';
 
 const app = express();
 
@@ -128,6 +129,7 @@ app.use('/api/gift', giftRoutes);
 app.use('/api/coupon', couponRoutes);
 app.use('/api/coin', coinRoutes);
 app.use('/api/topic', topicRoutes);
+app.use('/api/withdraw', withdrawRoutes);
 
 // Send 404 for any unknown API request
 app.use((req, res, next) => {

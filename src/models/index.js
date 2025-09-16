@@ -11,6 +11,7 @@ import Hashtag from './hastag.model.js';
 import HashtagVideo from './hashtagVideo.model.js';
 import Report from './report.model.js';
 import ReportReason from './reportReason.model.js';
+import WithdrawRequest from './withdrawRequest.model.js';
 
 // Define model relationships
 // User.hasMany(PasswordResetToken, {
@@ -142,6 +143,13 @@ Report.belongsTo(ReportReason, {
   as: 'reportReason',
 });
 
+// Withdraw Request association
+// Define the association
+WithdrawRequest.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user',
+});
+
 
 const db = {
   sequelize,
@@ -157,6 +165,7 @@ const db = {
   HashtagVideo,
   Report,
   ReportReason,
+  WithdrawRequest
 };
 
 export default db;
