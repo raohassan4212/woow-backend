@@ -24,6 +24,7 @@ import couponRoutes from './routes/couponRoutes.js';
 import coinRoutes from './routes/coinRoutes.js';
 import topicRoutes from './routes/topicRoutes.js';
 import withdrawRoutes from './routes/withdrawRoutes.js';
+import categoryRoutes from './routes/categoryRoutes.js'
 
 const app = express();
 
@@ -130,6 +131,7 @@ app.use('/api/coupon', couponRoutes);
 app.use('/api/coin', coinRoutes);
 app.use('/api/topic', topicRoutes);
 app.use('/api/withdraw', withdrawRoutes);
+app.use('/api/category', categoryRoutes);
 
 // Send 404 for any unknown API request
 app.use((req, res, next) => {

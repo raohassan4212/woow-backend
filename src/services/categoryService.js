@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import Gift from '../models/gift.model.js';
+import Category from '../models/category.model.js';
 
 /**
  * Get all report reasons with pagination and filtering
@@ -11,7 +11,7 @@ import Gift from '../models/gift.model.js';
  * @param {string} [options.search=''] - Search term to filter reasons by title
  * @returns {Promise<Object>} - Object containing report reasons and pagination info
  */
-export async function getGifts(options = {}) {
+export async function getCategories(options = {}) {
     try {
         const {
             page = 1,
@@ -20,6 +20,7 @@ export async function getGifts(options = {}) {
             sortOrder = 'DESC',
             search = '',
             id = null,
+            parent_id
         } = options;
 
         // Validate pagination parameters
@@ -33,6 +34,9 @@ export async function getGifts(options = {}) {
         if (id) {
             where.id = id;
         }
+        if (parent_id) {
+            where.parent_id = parent_id;
+        }
         if (search) {
             where.title = { [Op.like]: `%${search.toLowerCase()}%` };
         }
@@ -43,7 +47,7 @@ export async function getGifts(options = {}) {
         const order = sortOrder.toUpperCase() === 'ASC' ? 'ASC' : 'DESC';
 
         // Execute query with pagination
-        const { count, rows: data } = await Gift.findAndCountAll({
+        const { count, rows: data } = await Category.findAndCountAll({
             where,
             order: [[sortField, order]],
             limit: limitNum,
@@ -59,7 +63,7 @@ export async function getGifts(options = {}) {
         return {
             code: 200,
             success: true,
-            message: 'Get Gifts Successfully',
+            message: 'Get Category Successfully',
             data: {
                 data: data,
                 pagination: {
@@ -73,12 +77,12 @@ export async function getGifts(options = {}) {
             }
         };
     } catch (error) {
-        console.error('Error in Gift service:', error);
-        throw new Error(`Failed to fetch Gift reasons: ${error.message}`);
+        console.error('Error in Category service:', error);
+        throw new Error(`Failed to fetch Category reasons: ${error.message}`);
     }
 }
 
 
-export const giftService = {
-    getGifts,
+export const categoryService = {
+    getCategories,
 }
