@@ -46,6 +46,26 @@ Sound.belongsTo(SoundSection, {
   as: 'SoundSection',
 });
 
+// Report associations
+Report.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'reporter'
+});
+
+// Report to Video association
+Report.belongsTo(Video, {
+  foreignKey: 'value',
+  as: 'reportedVideo',
+  constraints: false
+});
+
+// Report to User association
+Report.belongsTo(User, {
+  foreignKey: 'value',
+  as: 'reportedUser',
+  constraints: false
+});
+
 // User and Video associations
 User.hasMany(Video, {
   foreignKey: 'user_id',

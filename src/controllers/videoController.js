@@ -16,6 +16,23 @@ const getVideos = async (req, res) => {
     }
 };
 
+const getNudeDetectedVideo = async (req, res) => {
+    try {
+        const video = await videoService.getNudeDetectedVideos(req.query);
+        return res.status(201).json(video);
+    } catch (error) {
+        return res.status(400).json(
+            {
+                code: 400,
+                success: false,
+                message: error.message,
+                data: null
+            }
+        );
+    }
+};
+
 export const videoController = {
-    getVideos
+    getVideos,
+    getNudeDetectedVideo
 }
