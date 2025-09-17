@@ -28,81 +28,30 @@ import categoryRoutes from './routes/categoryRoutes.js'
 
 const app = express();
 
+const allowedOrigins = [
+  "https://woowsocial.com",
+  "https://admin.woowsocial.com",
+  "http://localhost:3000",
+  "http://localhost:5000"
+];
 
-// // CORS configuration - MUST be before helmet
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     // Allow requests with no origin (like mobile apps or curl requests)
-//     if (!origin) return callback(null, true);
-    
-//     const allowedOrigins = ["https://woowsocial.com", "http://localhost:5000"];
-//     if (allowedOrigins.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-//   allowedHeaders: [
-//     "Origin",
-//     "X-Requested-With", 
-//     "Content-Type", 
-//     "Accept",
-//     "Authorization",
-//     "Cache-Control",
-//     "X-Access-Token"
-//   ],
-//   credentials: true,
-//   optionsSuccessStatus: 200, // Some legacy browsers choke on 204
-//   preflightContinue: false
-// };
-
-// // Apply CORS to all requests
-// app.use(cors(corsOptions));
-
-// // Debug middleware to log CORS headers
-// app.use((req, res, next) => {
-//   console.log(`${req.method} ${req.url}`);
-//   console.log('Origin:', req.headers.origin);
-//   console.log('Access-Control-Request-Method:', req.headers['access-control-request-method']);
-//   console.log('Access-Control-Request-Headers:', req.headers['access-control-request-headers']);
-  
-//   // Log response headers after they're set
-//   const originalSend = res.send;
-//   res.send = function(data) {
-//     console.log('Response headers:', {
-//       'Access-Control-Allow-Origin': res.get('Access-Control-Allow-Origin'),
-//       'Access-Control-Allow-Methods': res.get('Access-Control-Allow-Methods'),
-//       'Access-Control-Allow-Headers': res.get('Access-Control-Allow-Headers'),
-//       'Access-Control-Allow-Credentials': res.get('Access-Control-Allow-Credentials')
-//     });
-//     return originalSend.call(this, data);
-//   };
-  
-//   next();
-// });
-
-// // Handle preflight requests with the same configuration
-// app.options("*", cors(corsOptions));
-
-// // Configure helmet to not interfere with CORS
-// app.use(helmet({
-//   crossOriginResourcePolicy: { policy: "cross-origin" }
-// }));
-
-
-// Enable CORS
 const corsOptions = {
-  origin: "https://woowsocial.com",   // your frontend domain
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true); // allow non-browser requests (Postman, curl)
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // make sure OPTIONS always handled
 
-// Handle preflight explicitly
-app.options("*", cors(corsOptions));
 // Parse JSON request body
 app.use(express.json());
 
