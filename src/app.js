@@ -28,29 +28,29 @@ import categoryRoutes from './routes/categoryRoutes.js'
 
 const app = express();
 
-const allowedOrigins = [
-  "https://woowsocial.com",
-  "https://admin.woowsocial.com",
-  "http://localhost:3000",
-  "http://localhost:5000"
-];
+// const allowedOrigins = [
+//   "https://woowsocial.com",
+//   "https://admin.woowsocial.com",
+//   "http://localhost:3000",
+//   "http://localhost:5000"
+// ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // allow non-browser requests (Postman, curl)
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-};
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin) return callback(null, true); // allow non-browser requests (Postman, curl)
+//     if (allowedOrigins.includes(origin)) {
+//       return callback(null, true);
+//     } else {
+//       return callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+// };
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions)); // make sure OPTIONS always handled
+// app.use(cors(corsOptions));
+// app.options("*", cors(corsOptions)); // make sure OPTIONS always handled
 
 // Parse JSON request body
 app.use(express.json());
