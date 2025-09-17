@@ -92,8 +92,17 @@ const app = express();
 
 
 // Enable CORS
-app.use(cors());
-app.options('*', cors());
+const corsOptions = {
+  origin: "https://woowsocial.com",   // your frontend domain
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight explicitly
+app.options("*", cors(corsOptions));
 // Parse JSON request body
 app.use(express.json());
 
